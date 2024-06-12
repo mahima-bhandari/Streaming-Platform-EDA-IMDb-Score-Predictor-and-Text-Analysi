@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netflix Movie Score Estimator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scroll bars */
+      position: relative; /* Required for absolute positioning */
+    }
+    #background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1; /* Place behind other content */
+    }
+    .container {
+      position: relative; /* Required for z-index to work */
+      z-index: 1; /* Place above background video */
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.5); /* Transparent background */
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      display: none; /* Initially hide the container */
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    label, input {
+      margin-bottom: 10px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      text-align: center;
+    }
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <video id="background-video" autoplay loop muted>
+    <source src="https://openaicomproductionae4b.blob.core.windows.net/production-twill-01/c74791d0-75d2-48e6-acae-96d13bc97c56/paper-planes.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="container">
+    <h1>Netflix Movie Score Estimator</h1>
+    <form action="/predict" method="POST">
+      <label for="imdb_vote">IMDb Vote:</label>
+      <input type="number" id="imdb_vote" name="imdb_vote" step="0.01" required>
+
+      <button type="submit">Estimate</button>
+    </form>
+
+    <div id="result">
+      {% if prediction %}
+        Predicted Movie Score: {{ prediction|round(2) }}
+      {% endif %}
+    </div>
+  </div>
+  <button id="diveButton" onclick="toggleForm()">DIVE</button>
+
+  <script>
+    function toggleForm() {
+      var formContainer = document.querySelector('.container');
+      formContainer.style.display = 'block';
+      var diveButton = document.getElementById('diveButton');
+      diveButton.style.display = 'none';
+    }
+  </script>
+  
+
+</body>
+</html>
